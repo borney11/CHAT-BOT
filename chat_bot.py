@@ -21,7 +21,7 @@ if "messages" not in st.session_state:
 # ==============================
 # 🎨 UI
 # ==============================
-st.title("💬 OpenRouter Chat")
+st.title("💬 ChatBot")
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
@@ -78,3 +78,4 @@ if prompt:
     st.session_state.messages.append(
         {"role": "assistant", "content": reply}
     )
+
