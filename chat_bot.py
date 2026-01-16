@@ -2,12 +2,15 @@ import streamlit as st
 import requests
 
 # ==============================
-# 🔐 API KEY (HARDCODED)
+# 🔐 OPENROUTER API KEY
 # ==============================
-# WARNING: This is NOT safe for production
-TOGETHER_API_KEY = "8332a4e7ca135b9a7be92e939a40830ad90dc4474a68cb1885bbc8afec736d44"
+# WARNING: Hardcoded for simplicity (NOT for production)
+OPENROUTER_API_KEY = "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"
 
-API_URL = "https://api.together.xyz/v1/chat/completions"
+# ==============================
+# 🌐 OPENROUTER API URL
+# ==============================
+API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 # ==============================
 # 🧠 SESSION STATE
@@ -18,7 +21,7 @@ if "messages" not in st.session_state:
 # ==============================
 # 🎨 UI
 # ==============================
-st.title("💬 Together AI Chat")
+st.title("💬 OpenRouter Chat")
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
@@ -37,12 +40,15 @@ if prompt:
     )
 
     headers = {
-        "Authorization": f"Bearer {TOGETHER_API_KEY}",
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost:8501",  # REQUIRED by OpenRouter
+        "X-Title": "Streamlit Chat App",          # REQUIRED by OpenRouter
     }
 
     payload = {
-        "model": "meta-llama/Llama-3-8b-Instruct",
+        # ✅ This model works on OpenRouter for most accounts
+        "model": "meta-llama/llama-3-8b-instruct",
         "messages": st.session_state.messages,
         "max_tokens": 256,
         "temperature": 0.7,
@@ -50,6 +56,9 @@ if prompt:
 
     response = requests.post(API_URL, headers=headers, json=payload)
 
+    # ==============================
+    # ❌ ERROR HANDLING
+    # ==============================
     if response.status_code != 200:
         st.error(f"API Error {response.status_code}")
         st.code(response.text)
@@ -64,6 +73,7 @@ if prompt:
 
     reply = data["choices"][0]["message"]["content"]
 
+    # Assistant message
     st.chat_message("assistant").markdown(reply)
     st.session_state.messages.append(
         {"role": "assistant", "content": reply}
