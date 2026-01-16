@@ -2,9 +2,10 @@ import streamlit as st
 import requests
 
 # ==============================
-# 🔐 API KEY (FROM SECRETS)
+# 🔐 API KEY (HARDCODED)
 # ==============================
-TOGETHER_API_KEY = st.secrets["TOGETHER_API_KEY"]
+# WARNING: This is NOT safe for production
+TOGETHER_API_KEY = "8332a4e7ca135b9a7be92e939a40830ad90dc4474a68cb1885bbc8afec736d44"
 
 API_URL = "https://api.together.xyz/v1/chat/completions"
 
