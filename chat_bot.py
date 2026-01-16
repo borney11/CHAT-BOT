@@ -9,7 +9,7 @@ import requests
 # NEVER hardcode API keys
 # Set this in Streamlit Secrets or environment variables
 # Streamlit Cloud → App → Settings → Secrets
-TOGETHER_API_KEY = st.secrets.get("TOGETHER_API_KEY")
+TOGETHER_API_KEY = st.secrets.get("8332a4e7ca135b9a7be92e939a40830ad90dc4474a68cb1885bbc8afec736d44")
 
 if not TOGETHER_API_KEY:
     st.error("TOGETHER_API_KEY not found in secrets.")
@@ -102,3 +102,4 @@ if prompt:
     with open("chat_history.txt", "a", encoding="utf-8") as f:
         f.write(f"User: {prompt}\n")
         f.write(f"Assistant: {reply}\n\n")
+
